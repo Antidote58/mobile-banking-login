@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BankSecure Login</title>
+    <style>
+      :root {
+        --bg: #06131f;
+        --panel: rgba(9, 22, 36, 0.9);
+        --panel-soft: rgba(15, 35, 51, 0.9);
+        --primary: #4ecdc4;
+        --primary-2: #3fa0ff;
+        --accent: #9ef4d6;
+        --text: #eaf9ff;
+        --muted: #a4d0d5;
+        --danger: #ff6b6b;
+        --success: #38d39f;
+        --shadow: rgba(0, 0, 0, 0.22);
+      }
+
+      * { box-sizing: border-box; }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        font-family: Arial, Helvetica, sans-serif;
+        background: radial-gradient(circle at top, #123249 0%, #081822 35%, #030d14 100%);
+        color: var(--text);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+      }
+
+      .app-shell {
+        width: 100%;
+        max-width: 430px;
+      }
+
+      .bank-card {
+        background: linear-gradient(180deg, rgba(9, 22, 36, 0.95), rgba(8, 18, 28, 0.9));
+        border: 1px solid rgba(255,255,255,0.08);
+        border-radius: 24px;
+        box-shadow: 0 25px 50px var(--shadow);
+        padding: 28px 22px 22px;
+      }
+
+      .brand {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 18px;
+      }
+
+      .brand-mark {
+        width: 42px;
+        height: 42px;
+        border-radius: 12px;
+        background: linear-gradient(135deg, var(--primary), var(--primary-2));
+        display: grid;
+        place-items: center;
+        font-weight: 800;
+        color: #012b2b;
+      }
+
+      .brand-name {
+        font-size: 0.8rem;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
+
+      .title {
+        margin: 0;
+        font-size: clamp(2rem, 4vw, 2.5rem);
+      }
+
+      .subtitle {
+        margin: 8px 0 24px;
+        color: var(--muted);
+        line-height: 1.5;
+      }
+
+      .input-group {
+        margin-bottom: 16px;
+      }
+
+      label {
+        display: block;
+        margin-bottom: 8px;
+        font-size: 0.82rem;
+        color: var(--muted);
+      }
+
+      input {
+        width: 100%;
+        border: 1px solid rgba(255,255,255,0.08);
+        border-radius: 14px;
+        background: rgba(255, 255, 255, 0.03);
+        color: var(--text);
+        padding: 15px 14px;
+        font-size: 1rem;
+        outline: none;
+      }
+
+      input:focus {
+        border-color: rgba(78, 205, 196, 0.9);
+        box-shadow: 0 0 0 3px rgba(78, 205, 196, 0.18);
+      }
+
+      .row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin: 12px 0 20px;
+        gap: 15px;
+        font-size: 0.82rem;
+      }
+
+      .remember {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        color: var(--muted);
+      }
+
+      .remember input {
+        width: 16px;
+        height: 16px;
+      }
+
+      .link {
+        color: var(--accent);
+        text-decoration: none;
+      }
+
+      .primary-btn,
+      .secondary-btn,
+      .fallback-btn {
+        border: none;
+        border-radius: 14px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: 0.2s ease;
+      }
+
+      .primary-btn {
+        width: 100%;
+        padding: 16px;
+        background: linear-gradient(135deg, var(--primary), var(--primary-2));
+        color: #022325;
+        margin-bottom: 14px;
+      }
+
+      .primary-btn:hover,
+      .secondary-btn:hover,
+      .fallback-btn:hover {
+        transform: translateY(-1px);
+      }
+
+      .secondary-btn {
+        width: 100%;
+        padding: 14px 16px;
+        background: rgba(158, 244, 214, 0.12);
+        border: 1px solid rgba(158, 244, 214, 0.4);
+        color: var(--text);
+        margin-bottom: 16px;
+      }
+
+      .fallback-btn {
+        width: 100%;
+        padding: 12px 16px;
+        background: rgba(255,255,255,0.04);
+        color: var(--text);
+        border: 1px solid rgba(255,255,255,0.08);
+      }
+
+      .security-box {
+        margin-top: 18px;
+        border-radius: 16px;
+        background: rgba(78, 205, 196, 0.08);
+        border: 1px solid rgba(78, 205, 196, 0.25);
+        padding: 14px 12px;
+      }
+
+      .status {
+        font-weight: 700;
+        margin-bottom: 8px;
+      }
+
+      .muted {
+        color: var(--muted);
+        font-size: 0.82rem;
+        line-height: 1.5;
+      }
+
+      .camera-box {
+        position: relative;
+        width: 100%;
+        height: 200px;
+        background: rgba(255,255,255,0.04);
+        border: 1px solid rgba(255,255,255,0.08);
+        border-radius: 18px;
+        overflow: hidden;
+        margin-top: 16px;
+        display: none;
+      }
+
+      .camera-box video {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        background: #010b11;
+      }
+
+      .camera-overlay {
+        position: absolute;
+        inset: 0;
+        display: grid;
+        place-items: center;
+        background: radial-gradient(circle, rgba(0,0,0,0) 55%, rgba(0,0,0,0.35));
+      }
+
+      .scan-ring {
+        width: 150px;
+        height: 150px;
+        border: 2px solid rgba(158, 244, 214, 0.9);
+        border-radius: 50%;
+        box-shadow: 0 0 0 12px rgba(78, 205, 196, 0.1);
+      }
+
+      .alert {
+        display: none;
+        margin-top: 14px;
+        border-radius: 12px;
+        padding: 12px 14px;
+        font-size: 0.9rem;
+        line-height: 1.5;
+      }
+
+      .alert.error {
+        background: rgba(255, 107, 107, 0.12);
+        border: 1px solid rgba(255, 107, 107, 0.28);
+        color: #ffd8d8;
+      }
+
+      .alert.success {
+        background: rgba(56, 211, 159, 0.12);
+        border: 1px solid rgba(56, 211, 159, 0.28);
+        color: #d9fff1;
+      }
+
+      .signup {
+        text-align: center;
+        margin-top: 18px;
+        color: var(--muted);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="app-shell">
+      <div class="bank-card">
+        <div class="brand">
+          <div class="brand-mark">B</div>
+          <div class="brand-name">BankSecure</div>
+        </div>
+
+        <h1 class="title">Welcome back</h1>
+        <p class="subtitle">Access your account with secure banking login.</p>
+
+        <form id="loginForm">
+          <div class="input-group">
+            <label for="email">Account email</label>
+            <input id="email" type="email" placeholder="name@banksecure.com" required />
+          </div>
+
+          <div class="input-group">
+            <label for="password">Password</label>
+            <input id="password" type="password" placeholder="Enter your password" required />
+          </div>
+
+          <div class="row">
+            <label class="remember">
+              <input type="checkbox" />
+              <span>Remember me</span>
+            </label>
+            <a class="link" href="#">Forgot password?</a>
+          </div>
+
+          <button class="primary-btn" type="submit">Sign in</button>
+        </form>
+
+        <button id="faceLoginBtn" class="secondary-btn" type="button">
+          Use face login
+        </button>
+
+        <button id="fallbackBtn" class="fallback-btn" type="button">
+          Use PIN / password instead
+        </button>
+
+        <div class="camera-box" id="cameraBox">
+          <video id="cameraPreview" autoplay playsinline muted></video>
+          <div class="camera-overlay">
+            <div class="scan-ring"></div>
+          </div>
+        </div>
+
+        <div class="alert error" id="alertBox"></div>
+        <div class="alert success" id="successBox"></div>
+
+        <div class="security-box">
+          <div class="status">Secure access</div>
+          <div class="muted">
+            Camera permission is optional. If you deny it, the app will continue using your secure PIN or password.
+          </div>
+        </div>
+
+        <div class="signup">New to BankSecure? <a class="link" href="#">Open an account</a></div>
+      </div>
+    </div>
+
+    <script>
+      const loginForm = document.getElementById('loginForm');
+      const faceLoginBtn = document.getElementById('faceLoginBtn');
+      const fallbackBtn = document.getElementById('fallbackBtn');
+      const alertBox = document.getElementById('alertBox');
+      const successBox = document.getElementById('successBox');
+      const cameraBox = document.getElementById('cameraBox');
+      const cameraPreview = document.getElementById('cameraPreview');
+
+      function showAlert(type, message) {
+        if (type === 'error') {
+          alertBox.textContent = message;
+          alertBox.style.display = 'block';
+          successBox.style.display = 'none';
+        } else {
+          successBox.textContent = message;
+          successBox.style.display = 'block';
+          alertBox.style.display = 'none';
+        }
+      }
+
+      function stopCamera() {
+        if (cameraPreview && cameraPreview.srcObject) {
+          cameraPreview.srcObject.getTracks().forEach(track => track.stop());
+          cameraPreview.srcObject = null;
+        }
+        cameraBox.style.display = 'none';
+      }
+
+      async function requestFaceLogin() {
+        if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+          showAlert('error', 'Face login is not available on this device. Please use your password or PIN.');
+          return;
+        }
+
+        try {
+          const stream = await navigator.mediaDevices.getUserMedia({
+            video: {
+              facingMode: 'user'
+            }
+          });
+
+          cameraPreview.srcObject = stream;
+          cameraBox.style.display = 'block';
+          showAlert('success', 'Camera access granted. Face verification is ready.');
+        } catch (error) {
+          stopCamera();
+          showAlert('error', 'Camera permission denied. You can continue with your password or PIN.');
+        }
+      }
+
+      loginForm.addEventListener('submit', function (event) {
+        event.preventDefault();
+        const email = document.getElementById('email').value.trim();
+        const password = document.getElementById('password').value.trim();
+
+        if (!email || !password) {
+          showAlert('error', 'Please enter both your email and password.');
+          return;
+        }
+
+        showAlert('success', 'Secure login successful. Welcome back.');
+        stopCamera();
+      });
+
+      faceLoginBtn.addEventListener('click', requestFaceLogin);
+      fallbackBtn.addEventListener('click', function () {
+        stopCamera();
+        showAlert('success', 'Secure fallback enabled. Please enter your password or PIN.');
+      });
+    </script>
+  </body>
+</html>

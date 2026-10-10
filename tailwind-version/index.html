@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BankSecure Tailwind Login</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              bank: {
+                50: '#e9fdf9',
+                100: '#c8f5ee',
+                200: '#9feee1',
+                300: '#71e3d2',
+                400: '#47d4c0',
+                500: '#2db8a9',
+                600: '#228f92',
+                700: '#1e7072',
+                800: '#1d5a5f',
+                900: '#1b4648'
+              }
+            }
+          }
+        }
+      };
+    </script>
+    <style>
+      body {
+        background: radial-gradient(circle at top, #123c5a 0%, #0a1e2c 35%, #050d13 100%);
+      }
+    </style>
+  </head>
+  <body class="min-h-screen flex items-center justify-center p-5 text-slate-100">
+    <div class="w-full max-w-md">
+      <div class="rounded-3xl border border-white/10 bg-slate-900/80 p-6 shadow-2xl shadow-slate-950/50 backdrop-blur-md">
+        <div class="flex items-center justify-between mb-6">
+          <div class="w-11 h-11 rounded-2xl bg-gradient-to-br from-bank-400 to-blue-400 grid place-items-center text-xl font-extrabold text-slate-900">B</div>
+          <p class="text-[10px] tracking-[0.22em] uppercase text-slate-300">BankSecure</p>
+        </div>
+
+        <h1 class="text-4xl font-bold">Welcome back</h1>
+        <p class="mt-2 mb-7 text-sm text-slate-300">Secure access to your mobile banking account.</p>
+
+        <form id="loginForm">
+          <div class="mb-4">
+            <label class="block mb-2 text-xs text-slate-300">Account email</label>
+            <input type="email" placeholder="name@banksecure.com" class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-white placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-bank-400" required />
+          </div>
+
+          <div class="mb-4">
+            <label class="block mb-2 text-xs text-slate-300">Password</label>
+            <input type="password" placeholder="Enter your password" class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-white placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-bank-400" required />
+          </div>
+
+          <div class="flex items-center justify-between mb-5 text-xs text-slate-300">
+            <label class="inline-flex items-center gap-2">
+              <input type="checkbox" class="accent-bank-400" />
+              Remember me
+            </label>
+            <a href="#" class="text-bank-200 hover:underline">Forgot password?</a>
+          </div>
+
+          <button type="submit" class="w-full rounded-2xl bg-gradient-to-r from-bank-400 to-blue-400 px-4 py-3 font-bold text-slate-900 shadow-lg shadow-bank-900/40 transition hover:-translate-y-0.5">Sign in</button>
+        </form>
+
+        <button id="faceLoginBtn" type="button" class="mt-4 w-full rounded-2xl border border-bank-300/40 bg-bank-400/10 px-4 py-3 font-semibold text-white transition hover:-translate-y-0.5">Use face login</button>
+
+        <button id="fallbackBtn" type="button" class="mt-3 w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 font-semibold text-white transition hover:-translate-y-0.5">Use PIN / password instead</button>
+
+        <div id="cameraBox" class="hidden mt-5 overflow-hidden rounded-2xl border border-white/10 bg-slate-950/60">
+          <video id="cameraPreview" class="h-52 w-full object-cover" autoplay playsinline muted></video>
+        </div>
+
+        <div id="alertBox" class="mt-4 hidden rounded-2xl border border-red-400/30 bg-red-500/10 px-3 py-3 text-sm text-red-100"></div>
+        <div id="successBox" class="mt-4 hidden rounded-2xl border border-emerald-400/30 bg-emerald-500/10 px-3 py-3 text-sm text-emerald-100"></div>
+
+        <div class="mt-5 rounded-2xl border border-bank-400/30 bg-bank-400/10 p-3 text-xs leading-6 text-slate-300">
+          Camera permission is optional. If you deny it, the app will continue with your password or PIN.
+        </div>
+
+        <p class="mt-6 text-center text-sm text-slate-300">New to BankSecure? <a href="#" class="text-bank-200">Open an account</a></p>
+      </div>
+    </div>
+
+    <script>
+      const loginForm = document.getElementById('loginForm');
+      const faceLoginBtn = document.getElementById('faceLoginBtn');
+      const fallbackBtn = document.getElementById('fallbackBtn');
+      const cameraBox = document.getElementById('cameraBox');
+      const cameraPreview = document.getElementById('cameraPreview');
+      const alertBox = document.getElementById('alertBox');
+      const successBox = document.getElementById('successBox');
+
+      function showAlert(type, message) {
+        if (type === 'error') {
+          alertBox.textContent = message;
+          alertBox.classList.remove('hidden');
+          successBox.classList.add('hidden');
+        } else {
+          successBox.textContent = message;
+          successBox.classList.remove('hidden');
+          alertBox.classList.add('hidden');
+        }
+      }
+
+      function stopCamera() {
+        if (cameraPreview.srcObject) {
+          cameraPreview.srcObject.getTracks().forEach(track => track.stop());
+          cameraPreview.srcObject = null;
+        }
+        cameraBox.classList.add('hidden');
+      }
+
+      async function requestFaceLogin() {
+        if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+          showAlert('error', 'Face login is not supported on this device. Use password or PIN.');
+          return;
+        }
+
+        try {
+          const stream = await navigator.mediaDevices.getUserMedia({
+            video: { facingMode: 'user' }
+          });
+
+          cameraPreview.srcObject = stream;
+          cameraBox.classList.remove('hidden');
+          showAlert('success', 'Camera access granted. Face verification is ready.');
+        } catch (error) {
+          stopCamera();
+          showAlert('error', 'Camera permission denied. You can continue with your password or PIN.');
+        }
+      }
+
+      loginForm.addEventListener('submit', (event) => {
+        event.preventDefault();
+        const email = document.querySelector('input[type="email"]').value.trim();
+        const password = document.querySelector('input[type="password"]').value.trim();
+
+        if (!email || !password) {
+          showAlert('error', 'Please enter both your email and password.');
+          return;
+        }
+
+        stopCamera();
+        showAlert('success', 'Secure login successful. Welcome back.');
+      });
+
+      faceLoginBtn.addEventListener('click', requestFaceLogin);
+      fallbackBtn.addEventListener('click', () => {
+        stopCamera();
+        showAlert('success', 'Secure fallback enabled. Please enter your password or PIN.');
+      });
+    </script>
+  </body>
+</html>

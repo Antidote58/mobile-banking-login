@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BankSecure Bootstrap Login</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <style>
+      body {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: radial-gradient(circle at top, #153d5c 0%, #0a1c2b 35%, #050d13 100%);
+        color: #ebf9ff;
+        padding: 24px;
+      }
+
+      .bank-card {
+        background: rgba(12, 27, 39, 0.93);
+        border: 1px solid rgba(255,255,255,0.08);
+        border-radius: 24px;
+        box-shadow: 0 28px 60px rgba(0,0,0,0.35);
+        padding: 28px 22px;
+        max-width: 420px;
+      }
+
+      .brand {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 18px;
+      }
+
+      .brand-badge {
+        width: 42px;
+        height: 42px;
+        display: grid;
+        place-items: center;
+        border-radius: 12px;
+        background: linear-gradient(135deg, #4ecdc4, #3fa0ff);
+        color: #062f37;
+        font-weight: 800;
+      }
+
+      .brand-name {
+        font-size: 0.7rem;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        color: #a9d4dc;
+      }
+
+      h1 {
+        font-size: clamp(2rem, 5vw, 2.7rem);
+        font-weight: 700;
+        margin: 0;
+      }
+
+      .subtitle {
+        color: #a9d4dc;
+        margin: 10px 0 22px;
+      }
+
+      .form-control {
+        background: rgba(255,255,255,0.03);
+        border: 1px solid rgba(255,255,255,0.08);
+        color: #ebf9ff;
+        border-radius: 14px;
+        padding: 14px;
+      }
+
+      .form-control::placeholder {
+        color: #8db4bf;
+      }
+
+      .form-control:focus {
+        background: rgba(255,255,255,0.04);
+        border-color: rgba(78, 205, 196, 0.8);
+        box-shadow: 0 0 0 0.2rem rgba(78, 205, 196, 0.15);
+        color: #ebf9ff;
+      }
+
+      .remember-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin: 12px 0 20px;
+        color: #a9d4dc;
+        font-size: 0.85rem;
+      }
+
+      .form-check-input {
+        accent-color: #4ecdc4;
+      }
+
+      .primary-btn,
+      .secondary-btn,
+      .fallback-btn {
+        width: 100%;
+        border-radius: 14px;
+        font-weight: 700;
+      }
+
+      .primary-btn {
+        background: linear-gradient(135deg, #4ecdc4, #3fa0ff);
+        color: #062f37;
+        border: none;
+        padding: 14px;
+      }
+
+      .secondary-btn {
+        border: 1px solid rgba(158, 244, 214, 0.35);
+        background: rgba(158, 244, 214, 0.12);
+        color: #ebf9ff;
+        margin-top: 12px;
+        padding: 12px;
+      }
+
+      .fallback-btn {
+        background: rgba(255,255,255,0.03);
+        border: 1px solid rgba(255,255,255,0.08);
+        color: #ebf9ff;
+        margin-top: 10px;
+        padding: 12px;
+      }
+
+      .camera-box {
+        display: none;
+        height: 200px;
+        width: 100%;
+        overflow: hidden;
+        border-radius: 18px;
+        margin-top: 16px;
+        border: 1px solid rgba(255,255,255,0.08);
+        background: rgba(2, 12, 18, 0.8);
+      }
+
+      .camera-box video {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .alert {
+        display: none;
+        margin-top: 16px;
+        border-radius: 12px;
+        padding: 12px 14px;
+        font-size: 0.9rem;
+      }
+
+      .alert.error {
+        background: rgba(255, 122, 122, 0.12);
+        border: 1px solid rgba(255, 122, 122, 0.28);
+        color: #ffd7d7;
+      }
+
+      .alert.success {
+        background: rgba(63, 213, 157, 0.12);
+        border: 1px solid rgba(63, 213, 157, 0.28);
+        color: #d9fff1;
+      }
+
+      .security-note {
+        background: rgba(78, 205, 196, 0.08);
+        border: 1px solid rgba(78, 205, 196, 0.2);
+        color: #a9d4dc;
+        border-radius: 14px;
+        padding: 12px 14px;
+        margin-top: 18px;
+        font-size: 0.83rem;
+        line-height: 1.6;
+      }
+
+      a {
+        color: #9feee1;
+        text-decoration: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="bank-card">
+      <div class="brand">
+        <div class="brand-badge">B</div>
+        <div class="brand-name">BankSecure</div>
+      </div>
+
+      <h1>Welcome back</h1>
+      <p class="subtitle">Secure access to your mobile banking account.</p>
+
+      <form id="loginForm">
+        <div class="mb-3">
+          <label class="form-label text-secondary">Account email</label>
+          <input type="email" class="form-control" placeholder="name@banksecure.com" required />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label text-secondary">Password</label>
+          <input type="password" class="form-control" placeholder="Enter your password" required />
+        </div>
+
+        <div class="remember-row">
+          <label class="form-check-label">
+            <input class="form-check-input" type="checkbox" />
+            <span class="ms-2">Remember me</span>
+          </label>
+          <a href="#">Forgot password?</a>
+        </div>
+
+        <button class="primary-btn btn" type="submit">Sign in</button>
+      </form>
+
+      <button id="faceLoginBtn" class="secondary-btn btn" type="button">Use face login</button>
+      <button id="fallbackBtn" class="fallback-btn btn" type="button">Use PIN / password instead</button>
+
+      <div class="camera-box" id="cameraBox">
+        <video id="cameraPreview" autoplay playsinline muted></video>
+      </div>
+
+      <div class="alert error" id="alertBox"></div>
+      <div class="alert success" id="successBox"></div>
+
+      <div class="security-note">
+        Camera permission is optional. If you deny it, the app remains secure and continues with your password or PIN.
+      </div>
+
+      <div class="text-center mt-4 text-secondary">New to BankSecure? <a href="#">Open an account</a></div>
+    </div>
+
+    <script>
+      const loginForm = document.getElementById('loginForm');
+      const faceLoginBtn = document.getElementById('faceLoginBtn');
+      const fallbackBtn = document.getElementById('fallbackBtn');
+      const alertBox = document.getElementById('alertBox');
+      const successBox = document.getElementById('successBox');
+      const cameraBox = document.getElementById('cameraBox');
+      const cameraPreview = document.getElementById('cameraPreview');
+
+      function showAlert(type, message) {
+        if (type === 'error') {
+          alertBox.textContent = message;
+          alertBox.style.display = 'block';
+          successBox.style.display = 'none';
+        } else {
+          successBox.textContent = message;
+          successBox.style.display = 'block';
+          alertBox.style.display = 'none';
+        }
+      }
+
+      function stopCamera() {
+        if (cameraPreview.srcObject) {
+          cameraPreview.srcObject.getTracks().forEach(track => track.stop());
+          cameraPreview.srcObject = null;
+        }
+        cameraBox.style.display = 'none';
+      }
+
+      async function requestFaceLogin() {
+        if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+          showAlert('error', 'Face login not supported here. Use password or PIN.');
+          return;
+        }
+
+        try {
+          const stream = await navigator.mediaDevices.getUserMedia({
+            video: { facingMode: 'user' }
+          });
+
+          cameraPreview.srcObject = stream;
+          cameraBox.style.display = 'block';
+          showAlert('success', 'Camera access granted. Face verification is ready.');
+        } catch (error) {
+          stopCamera();
+          showAlert('error', 'Camera permission denied. You can continue with password or PIN.');
+        }
+      }
+
+      loginForm.addEventListener('submit', (event) => {
+        event.preventDefault();
+        const email = loginForm.querySelector('input[type="email"]').value.trim();
+        const password = loginForm.querySelector('input[type="password"]').value.trim();
+
+        if (!email || !password) {
+          showAlert('error', 'Please enter both your email and password.');
+          return;
+        }
+
+        stopCamera();
+        showAlert('success', 'Secure login successful. Welcome back.');
+      });
+
+      faceLoginBtn.addEventListener('click', requestFaceLogin);
+      fallbackBtn.addEventListener('click', () => {
+        stopCamera();
+        showAlert('success', 'Secure fallback enabled. Please use your password or PIN.');
+      });
+    </script>
+  </body>
+</html>
